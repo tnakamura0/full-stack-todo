@@ -14,8 +14,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { signupSchema } from "@/auth/schemas";
 import type { SignupFormValues } from "@/auth/schemas";
 import { FcGoogle } from "react-icons/fc";
-import { Link } from "react-router-dom";
-import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 import { authRepository } from "@/modules/auth/auth.repository";
 import { useCurrentUser } from "@/modules/auth/current-user.state";
 
@@ -32,18 +32,28 @@ export default function SignupPage() {
     resolver: zodResolver(signupSchema),
   });
 
-  const currentUser = useCurrentUser();
+  const currentUserStore = useCurrentUser();
 
   const signUp = async () => {
     try {
       const user = await authRepository.signUp(name, email, password);
       console.log("User signed up successfully:", user);
-      currentUser.set(user);
+      currentUserStore.set(user);
     } catch (error) {
       console.error("Error signing up:", error);
       // Handle error appropriately, e.g., show a notification or alert
     }
   };
+
+  // 以下useEffectまでリダイレクト処理
+  const navigate = useNavigate();
+
+  // useEffectでレンダリング完了後にリダイレクトが実行されるようにする
+  useEffect(() => {
+    if (currentUserStore.currentUser) {
+      navigate("/");
+    }
+  }, [currentUserStore.currentUser, navigate]);
 
   return (
     <form
