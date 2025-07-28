@@ -1,7 +1,7 @@
 import { supabase } from "@/lib/supabase";
 
 export const authRepository = {
-  async signUp(name: string, email: string, password: string) {
+  async signup(name: string, email: string, password: string) {
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
@@ -17,7 +17,7 @@ export const authRepository = {
       userName: data.user.user_metadata.name, // nameはuser_metadataに格納されている
     };
   },
-  async signIn(email: string, password: string) {
+  async signin(email: string, password: string) {
     const { data, error } = await supabase.auth.signInWithPassword({
       email,
       password,

@@ -34,9 +34,9 @@ export default function SignupPage() {
 
   const currentUserStore = useCurrentUser();
 
-  const signUp = async () => {
+  const signup = async () => {
     try {
-      const user = await authRepository.signUp(name, email, password);
+      const user = await authRepository.signup(name, email, password);
       console.log("User signed up successfully:", user);
       currentUserStore.set(user);
     } catch (error) {
@@ -57,7 +57,7 @@ export default function SignupPage() {
 
   return (
     <form
-      onSubmit={handleSubmit(signUp)}
+      onSubmit={handleSubmit(signup)}
       className="min-h-screen flex items-center justify-center p-4"
     >
       <Card className="w-full max-w-sm">

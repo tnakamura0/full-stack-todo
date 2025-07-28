@@ -33,9 +33,9 @@ export default function SigninPage() {
 
   const currentUserStore = useCurrentUser();
 
-  const signIn = async () => {
+  const signin = async () => {
     try {
-      const user = await authRepository.signIn(email, password);
+      const user = await authRepository.signin(email, password);
       console.log("User signed in successfully:", user);
       currentUserStore.set(user);
     } catch (error) {
@@ -56,7 +56,7 @@ export default function SigninPage() {
 
   return (
     <form
-      onSubmit={handleSubmit(signIn)}
+      onSubmit={handleSubmit(signin)}
       className="min-h-screen flex items-center justify-center p-4"
     >
       <Card className="w-full max-w-sm">
