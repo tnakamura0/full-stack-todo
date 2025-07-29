@@ -54,7 +54,7 @@ export default function TodoPage() {
   return (
     <div className="min-h-screen flex flex-col items-center p-4">
       <div className="w-full max-w-md space-y-4">
-        <h1 className="text-2xl font-bold text-cyan-600/80 text-center">
+        <h1 className="text-2xl font-bold text-cyan-500/80 text-center">
           Todoリスト
         </h1>
         <form

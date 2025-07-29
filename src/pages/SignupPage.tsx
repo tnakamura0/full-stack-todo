@@ -15,15 +15,11 @@ import { signupSchema } from "@/auth/schemas";
 import type { SignupFormValues } from "@/auth/schemas";
 import { FcGoogle } from "react-icons/fc";
 import { Link, useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { authRepository } from "@/modules/auth/auth.repository";
 import { useCurrentUser } from "@/modules/auth/current-user.state";
 
 export default function SignupPage() {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-
   const {
     register,
     handleSubmit,
@@ -34,9 +30,13 @@ export default function SignupPage() {
 
   const currentUserStore = useCurrentUser();
 
-  const signup = async () => {
+  const signup = async (data: SignupFormValues) => {
     try {
-      const user = await authRepository.signup(name, email, password);
+      const user = await authRepository.signup(
+        data.name,
+        data.email,
+        data.password
+      );
       console.log("User signed up successfully:", user);
       currentUserStore.set(user);
     } catch (error) {
@@ -77,7 +77,6 @@ export default function SignupPage() {
                 placeholder="ユーザー名を入力..."
                 required
                 {...register("name")}
-                onChange={(e) => setName(e.target.value)}
               />
               {errors.name && (
                 <p className="text-red-500/80">{errors.name.message}</p>
@@ -91,7 +90,6 @@ export default function SignupPage() {
                 placeholder="m@example.com"
                 required
                 {...register("email")}
-                onChange={(e) => setEmail(e.target.value)}
               />
               {errors.email && (
                 <p className="text-red-500/80">{errors.email.message}</p>
@@ -104,7 +102,6 @@ export default function SignupPage() {
                 type="password"
                 required
                 {...register("password")}
-                onChange={(e) => setPassword(e.target.value)}
               />
               {errors.password && (
                 <p className="text-red-500/80">{errors.password.message}</p>

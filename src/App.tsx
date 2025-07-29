@@ -5,6 +5,7 @@ import SignupPage from "./pages/SignupPage";
 import { useCurrentUser } from "./modules/auth/current-user.state";
 import { authRepository } from "./modules/auth/auth.repository";
 import { useEffect, useState } from "react";
+import Layout from "./Layout";
 
 export default function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -34,7 +35,9 @@ export default function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<TodoPage />} />
+        <Route path="/" element={<Layout />}>
+          <Route index element={<TodoPage />} />
+        </Route>
         <Route path="/signin" element={<SigninPage />} />
         <Route path="/signup" element={<SignupPage />} />
       </Routes>

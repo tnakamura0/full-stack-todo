@@ -10,9 +10,9 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
-import { Switch } from "@/components/ui/switch";
 
 import type { Todo, TodoDisplay } from "./todoTypes";
+import { Checkbox } from "@/components/ui/checkbox";
 
 export default function TodoList({
   todos,
@@ -40,16 +40,19 @@ export default function TodoList({
             className="w-full p-0.5 border-b-cyan-700/60 border-b-1 border-dashed marker:text-cyan-700/60 marker:text-lg"
           >
             <div className="flex justify-between items-center">
-              <span>{todo.text}</span>
+              <span
+                className={todo.isCompleted ? "line-through text-gray-500" : ""}
+              >
+                {todo.text}
+              </span>
               <div>
-                <span className="ml-2">
-                  {todo.isCompleted ? "完了" : "未完了"}
-                </span>
-                <Switch
-                  id={`todo-${todo.id}`}
+                <Checkbox
+                  id={`todo-${todo.id}-checkbox`}
                   checked={todo.isCompleted}
                   onCheckedChange={(checked) => {
-                    handleIsCompletedChange(todo.id, checked);
+                    if (typeof checked === "boolean") {
+                      handleIsCompletedChange(todo.id, checked);
+                    }
                   }}
                 />
                 <div className="ml-2 inline-flex items-center">

@@ -15,14 +15,11 @@ import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { signinSchema, type SigninFormValues } from "@/auth/schemas";
 import { FcGoogle } from "react-icons/fc";
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { authRepository } from "@/modules/auth/auth.repository";
 import { useCurrentUser } from "@/modules/auth/current-user.state";
 
 export default function SigninPage() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-
   const {
     register,
     handleSubmit,
@@ -33,9 +30,9 @@ export default function SigninPage() {
 
   const currentUserStore = useCurrentUser();
 
-  const signin = async () => {
+  const signin = async (data: SigninFormValues) => {
     try {
-      const user = await authRepository.signin(email, password);
+      const user = await authRepository.signin(data.email, data.password);
       console.log("User signed in successfully:", user);
       currentUserStore.set(user);
     } catch (error) {
@@ -83,7 +80,6 @@ export default function SigninPage() {
                 placeholder="m@example.com"
                 required
                 {...register("email")}
-                onChange={(e) => setEmail(e.target.value)}
               />
               {errors.email && (
                 <p className="text-red-500/80">{errors.email.message}</p>
@@ -104,7 +100,6 @@ export default function SigninPage() {
                 type="password"
                 required
                 {...register("password")}
-                onChange={(e) => setPassword(e.target.value)}
               />
               {errors.password && (
                 <p className="text-red-500/80">{errors.password.message}</p>
