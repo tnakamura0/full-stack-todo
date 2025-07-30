@@ -36,8 +36,9 @@ export default function SigninPage() {
       console.log("User signed in successfully:", user);
       currentUserStore.set(user);
     } catch (error) {
-      console.error("Error signing in:", error);
-      // Handle error appropriately, e.g., show a notification or alert
+      const message =
+        error instanceof Error ? error.message : "不明なエラーが発生しました";
+      alert("サインインに失敗しました: " + message);
     }
   };
 
