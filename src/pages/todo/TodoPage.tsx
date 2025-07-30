@@ -9,46 +9,53 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
-import type { Todo, TodoDisplay } from "./todoTypes";
+import type { TodoDisplay } from "./todoTypes";
 import TodoList from "./TodoList";
+import { useCurrentUser } from "@/modules/auth/current-user.state";
+import { todoRepository } from "@/modules/todos/todo.repository";
+import { useTodoStore } from "@/modules/todos/todo.state";
 
 export default function TodoPage() {
   const [text, setText] = useState<string>("");
-  const [todos, setTodos] = useState<Todo[]>([]); // todos[ { id: string; text: string; isCompleted: boolean} ]
   const [display, setDisplay] = useState<TodoDisplay>("all");
+  const currentUserStore = useCurrentUser();
+  const todoStore = useTodoStore();
+  const navigate = useNavigate();
 
-  const handleClick = () => {
-    if (text.trim() === "") return;
-    setTodos([
-      ...todos,
-      { id: Date.now().toString(), text, isCompleted: false },
-    ]);
-    setText("");
-  };
+  // 認証チェック
+  useEffect(() => {
+    if (!currentUserStore.currentUser) {
+      navigate("/signin");
+    }
+  }, [currentUserStore.currentUser, navigate]);
+
+  // ログインしていない場合は何も表示しない
+  if (!currentUserStore.currentUser) {
+    return null;
+  }
 
   const handleDisplay = (value: TodoDisplay) => {
     setDisplay(value);
     console.log("Display changed to:", value);
   };
 
-  const handleIsCompletedChange = (id: string, checked: boolean) => {
-    setTodos(
-      todos.map((todo) =>
-        todo.id === id ? { ...todo, isCompleted: checked } : todo
-      )
-    );
-  };
-
-  const handleDelete = (id: string) => {
-    const deletedTodos = todos.filter((todo) => todo.id != id);
-    setTodos(deletedTodos);
-  };
-
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    handleClick();
+    if (text.trim() === "") return;
+    createTodo();
+  };
+
+  const createTodo = async () => {
+    const newTodo = await todoRepository.createTodo(
+      currentUserStore.currentUser!.id,
+      text
+    );
+    todoStore.add(newTodo);
+    setText("");
+    console.log("New Todo created:", newTodo);
   };
 
   return (
@@ -72,7 +79,7 @@ export default function TodoPage() {
           </Button>
         </form>
         <div className="flex justify-center items-center gap-2">
-          <div>タスク表示切り替え</div>
+          {/* <div>表示</div> */}
           <Select
             value={display}
             onValueChange={handleDisplay}
@@ -91,12 +98,7 @@ export default function TodoPage() {
             </SelectContent>
           </Select>
         </div>
-        <TodoList
-          todos={todos}
-          handleIsCompletedChange={handleIsCompletedChange}
-          handleDelete={handleDelete}
-          display={display}
-        />
+        <TodoList display={display} />
       </div>
     </div>
   );

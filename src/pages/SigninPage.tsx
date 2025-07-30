@@ -54,7 +54,7 @@ export default function SigninPage() {
   return (
     <form
       onSubmit={handleSubmit(signin)}
-      className="min-h-screen flex items-center justify-center p-4"
+      className="min-h-screen flex items-start justify-center p-4 pt-16"
     >
       <Card className="w-full max-w-sm">
         <CardHeader>
@@ -88,12 +88,12 @@ export default function SigninPage() {
             <div className="grid gap-2">
               <div className="flex items-center">
                 <Label htmlFor="password">Password</Label>
-                <a
+                {/* <a
                   href="#"
                   className="ml-auto inline-block text-sm underline-offset-4 hover:underline"
                 >
                   パスワードを忘れましたか？
-                </a>
+                </a> */}
               </div>
               <Input
                 id="password"

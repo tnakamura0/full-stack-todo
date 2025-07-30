@@ -58,7 +58,7 @@ export default function SignupPage() {
   return (
     <form
       onSubmit={handleSubmit(signup)}
-      className="min-h-screen flex items-center justify-center p-4"
+      className="min-h-screen flex items-start justify-center p-4 pt-16"
     >
       <Card className="w-full max-w-sm">
         <CardHeader>

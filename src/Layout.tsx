@@ -6,9 +6,13 @@ export default function Layout() {
   return (
     <SidebarProvider>
       <AppSidebar />
-      <main>
+      <main className="flex-1 flex flex-col">
         <SidebarTrigger />
-        <Outlet />
+        <div className="flex-1 flex justify-center items-start p-4">
+          <div className="w-full max-w-4xl">
+            <Outlet />
+          </div>
+        </div>
       </main>
     </SidebarProvider>
   );

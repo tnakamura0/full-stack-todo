@@ -1,19 +1,20 @@
 import {
-  Calendar,
-  ChevronUp,
-  Home,
-  Inbox,
-  Search,
-  Settings,
+  ChevronDown,
+  // Calendar,
+  // ChevronUp,
+  // Home,
+  // Inbox,
+  // Search,
+  // Settings,
   User2,
 } from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
-  SidebarGroup,
-  SidebarGroupContent,
-  SidebarGroupLabel,
+  // SidebarGroup,
+  // SidebarGroupContent,
+  // SidebarGroupLabel,
   SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
@@ -29,33 +30,33 @@ import { authRepository } from "@/modules/auth/auth.repository";
 import { useCurrentUser } from "@/modules/auth/current-user.state";
 import { useNavigate } from "react-router-dom";
 
-const items = [
-  {
-    title: "Home",
-    url: "#",
-    icon: Home,
-  },
-  {
-    title: "Inbox",
-    url: "#",
-    icon: Inbox,
-  },
-  {
-    title: "Calendar",
-    url: "#",
-    icon: Calendar,
-  },
-  {
-    title: "Search",
-    url: "#",
-    icon: Search,
-  },
-  {
-    title: "Settings",
-    url: "#",
-    icon: Settings,
-  },
-];
+// const items = [
+//   {
+//     title: "Home",
+//     url: "#",
+//     icon: Home,
+//   },
+//   {
+//     title: "Inbox",
+//     url: "#",
+//     icon: Inbox,
+//   },
+//   {
+//     title: "Calendar",
+//     url: "#",
+//     icon: Calendar,
+//   },
+//   {
+//     title: "Search",
+//     url: "#",
+//     icon: Search,
+//   },
+//   {
+//     title: "Settings",
+//     url: "#",
+//     icon: Settings,
+//   },
+// ];
 
 export function AppSidebar() {
   const currentUserStore = useCurrentUser();
@@ -77,9 +78,39 @@ export function AppSidebar() {
 
   return (
     <Sidebar>
-      <SidebarHeader />
+      <SidebarHeader>ユーザー</SidebarHeader>
       <SidebarContent>
-        <SidebarGroup>
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <SidebarMenuButton variant={"outline"}>
+                  <User2 className="mr-2 h-4 w-4" />
+                  {currentUserStore.currentUser?.user_metadata.name}
+                  <ChevronDown className="ml-auto h-4 w-4" />
+                </SidebarMenuButton>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent
+                side="top"
+                className="w-[--radix-popper-anchor-width]"
+              >
+                {/* <DropdownMenuItem>
+                  <span>メニューアイテム1</span>
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <span>メニューアイテム2</span>
+                </DropdownMenuItem> */}
+                <DropdownMenuItem
+                  className="text-red-500 focus:text-red-500/80 hover:text-red-500/80 focus:bg-red-50 dark:focus:bg-red-950/20"
+                  onClick={signout}
+                >
+                  <span>サインアウト</span>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </SidebarMenuItem>
+        </SidebarMenu>
+        {/* <SidebarGroup>
           <SidebarGroupLabel>Application</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
@@ -95,40 +126,9 @@ export function AppSidebar() {
               ))}
             </SidebarMenu>
           </SidebarGroupContent>
-        </SidebarGroup>
+        </SidebarGroup> */}
       </SidebarContent>
-      <SidebarFooter>
-        <SidebarMenu>
-          <SidebarMenuItem>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <SidebarMenuButton variant={"outline"}>
-                  <User2 className="mr-2 h-4 w-4" />
-                  {currentUserStore.currentUser?.user_metadata.name}
-                  <ChevronUp className="ml-auto h-4 w-4" />
-                </SidebarMenuButton>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent
-                side="top"
-                className="w-[--radix-popper-anchor-width]"
-              >
-                <DropdownMenuItem>
-                  <span>Account</span>
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <span>Billing</span>
-                </DropdownMenuItem>
-                <DropdownMenuItem
-                  className="text-red-500 focus:text-red-500/80 hover:text-red-500/80 focus:bg-red-50 dark:focus:bg-red-950/20"
-                  onClick={signout}
-                >
-                  <span>サインアウト</span>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </SidebarMenuItem>
-        </SidebarMenu>
-      </SidebarFooter>
+      <SidebarFooter></SidebarFooter>
     </Sidebar>
   );
 }
